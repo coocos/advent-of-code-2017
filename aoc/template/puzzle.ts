@@ -3,8 +3,8 @@ import { join } from "path";
 import assert from "assert";
 
 async function readInput() {
-  const input = join(__dirname, "input.txt");
-  return readFile(input, "utf-8");
+  const input = await readFile(join(__dirname, "input.txt"), "utf-8");
+  return input;
 }
 
 async function solve() {
