@@ -22,7 +22,7 @@ async function solve() {
     (sum, numbers) => sum + numbers[numbers.length - 1] - numbers[0],
     0
   );
-  assert.strictEqual(sum, 39126);
+  assert(sum === 39126);
 
   // Second part
   let divisionSum = 0;
@@ -37,7 +37,7 @@ async function solve() {
       }
     }
   }
-  assert.strictEqual(divisionSum, 258);
+  assert(divisionSum === 258);
 }
 
 solve();

@@ -23,16 +23,10 @@ async function solve() {
   const offsets = await readInput();
 
   // First part
-  assert.strictEqual(
-    jump([...offsets], () => 1),
-    325922
-  );
+  assert(jump([...offsets], () => 1) === 325922);
 
   // Second part
-  assert.strictEqual(
-    jump([...offsets], (x) => (x >= 3 ? -1 : 1)),
-    24490906
-  );
+  assert(jump([...offsets], (x) => (x >= 3 ? -1 : 1)) === 24490906);
 }
 
 solve();

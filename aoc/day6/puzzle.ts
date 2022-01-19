@@ -31,10 +31,10 @@ async function solve() {
   const banks = await readInput();
 
   // First part
-  assert.strictEqual(loop(banks), 12841);
+  assert(loop(banks) === 12841);
 
   // Second part
-  assert.strictEqual(loop(banks), 8038);
+  assert(loop(banks) === 8038);
 }
 
 solve();

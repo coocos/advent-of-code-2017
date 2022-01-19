@@ -19,7 +19,7 @@ async function solve() {
       nextSum += parseInt(a);
     }
   }
-  assert.strictEqual(nextSum, 997);
+  assert(nextSum === 997);
 
   // Second part
   let halfSum = 0;
@@ -30,7 +30,7 @@ async function solve() {
       halfSum += parseInt(a);
     }
   }
-  assert.strictEqual(halfSum, 1358);
+  assert(halfSum === 1358);
 }
 
 solve();

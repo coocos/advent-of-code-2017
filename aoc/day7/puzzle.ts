@@ -83,11 +83,11 @@ async function solve() {
       candidates.delete(subprogram.name);
     });
   const root = [...candidates].pop();
-  assert.strictEqual(root, "vgzejbd");
+  assert(root === "vgzejbd");
 
   // Second part
   const weight = correctWrongWeight(programs[root]);
-  assert.strictEqual(weight, 1226);
+  assert(weight === 1226);
 }
 
 solve();

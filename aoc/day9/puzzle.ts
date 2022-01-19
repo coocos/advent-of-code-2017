@@ -49,10 +49,10 @@ async function solve() {
   }
 
   // First part
-  assert.strictEqual(groupScore, 21037);
+  assert(groupScore === 21037);
 
   // Second part
-  assert.strictEqual(garbageScore, 9495);
+  assert(garbageScore === 9495);
 }
 
 solve();

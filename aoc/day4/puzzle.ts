@@ -15,13 +15,13 @@ async function solve() {
   const validForFirstPolicy = passphrases.filter(
     (phrase) => new Set(phrase).size === phrase.length
   );
-  assert.strictEqual(validForFirstPolicy.length, 455);
+  assert(validForFirstPolicy.length === 455);
 
   // Second part
   const validForSecondPolicy = passphrases
     .map((phrase) => phrase.map((word) => Array.from(word).sort().join("")))
     .filter((phrase) => new Set(phrase).size === phrase.length);
-  assert.strictEqual(validForSecondPolicy.length, 186);
+  assert(validForSecondPolicy.length === 186);
 }
 
 solve();

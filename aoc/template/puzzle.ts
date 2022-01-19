@@ -9,7 +9,7 @@ async function readInput() {
 
 async function solve() {
   const input = await readInput();
-  assert.strictEqual(input, "");
+  assert(input === "");
 }
 
 solve();

@@ -65,10 +65,10 @@ async function solve() {
   }
 
   // First part
-  assert.strictEqual(Math.max(...Object.values(registers)), 4832);
+  assert(Math.max(...Object.values(registers)) === 4832);
 
   // Second part
-  assert.strictEqual(highestValueEver, 5443);
+  assert(highestValueEver === 5443);
 }
 
 solve();
