@@ -2,87 +2,60 @@ import { readFile } from "fs/promises";
 import { join } from "path";
 import assert from "assert";
 
-interface Node {
-  value: number;
-  next: Node;
-}
-
 async function readInput() {
   const input = await readFile(join(__dirname, "input.txt"), "utf-8");
   return input.split(",").map((value) => parseInt(value));
 }
 
-function circularList(size: number) {
-  const head: any = {
-    value: 0,
-  };
-  let current = head;
-  while (current.value < size - 1) {
-    current.next = {
-      value: current.value + 1,
-    };
-    current = current.next;
-  }
-  current.next = head;
-  return head as Node;
+function sparseHash(input: number[], rounds = 64): number[] {
+  const values = Array.from(Array(256).keys());
+  let position = 0;
+  let skip = 0;
+  Array(rounds)
+    .fill(input)
+    .flat()
+    .forEach((byte) => {
+      let p1 = position;
+      let p2 = position + byte - 1;
+      while (p1 < p2) {
+        const temp = values[p1 % values.length];
+        values[p1 % values.length] = values[p2 % values.length];
+        values[p2 % values.length] = temp;
+        p1++;
+        p2--;
+      }
+      position = (position + byte + skip) % values.length;
+      skip++;
+    });
+  return values;
 }
 
-function denseHash(head: Node) {
-  let current = head;
+function hash(input: number[]) {
+  const sparse = sparseHash(input);
   const denseHash: number[] = [];
   let block: number[] = [];
   for (let i = 0; i <= 256; i++) {
-    if (i % 16 === 0) {
-      if (block.length > 0) {
-        denseHash.push(block.reduce((a, b) => a ^ b));
-      }
+    if (block.length === 16) {
+      denseHash.push(block.reduce((a, b) => a ^ b));
       block = [];
     }
-    block.push(current.value);
-    current = current.next;
+    block.push(sparse[i]);
   }
-  return denseHash;
-}
-
-function hash(lengths: number[], rounds: number): Node {
-  const head = circularList(256);
-  let position = head;
-  let skip = 0;
-
-  for (let i = 0; i < rounds; i++) {
-    lengths.forEach((length) => {
-      let current = position;
-      const values: number[] = [];
-      for (let i = 0; i < length; i++) {
-        values.push(current.value);
-        current = current.next;
-      }
-      current = position;
-      for (let i = 0; i < length; i++) {
-        const value = values.pop();
-        assert(value !== undefined);
-        current.value = value;
-        current = current.next;
-      }
-      for (let i = 0; i < length + skip; i++) {
-        position = position.next;
-      }
-      skip++;
-    });
-  }
-  return head;
+  return denseHash
+    .map((number) => number.toString(16).padStart(2, "0"))
+    .join("");
 }
 
 async function solve() {
-  const lengths = await readInput();
+  const input = await readInput();
 
   // First part
-  const head = hash(lengths, 1);
-  assert(head.value * head.next.value === 8536);
+  const [first, second, ...rest] = sparseHash(input, 1);
+  assert(first * second === 8536);
 
   // Second part
-  const asciiLengths = [
-    ...lengths
+  const extendedInput = [
+    ...input
       .join(",")
       .split("")
       .map((letter) => letter.charCodeAt(0)),
@@ -92,11 +65,7 @@ async function solve() {
     47,
     23,
   ];
-
-  const knotHash = denseHash(hash(asciiLengths, 64))
-    .map((number) => number.toString(16).padStart(2, "0"))
-    .join("");
-  assert(knotHash === "aff593797989d665349efe11bb4fd99b");
+  assert(hash(extendedInput) === "aff593797989d665349efe11bb4fd99b");
 }
 
 solve();
