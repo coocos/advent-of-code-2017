@@ -31,7 +31,7 @@ function sparseHash(input: number[], rounds = 64): number[] {
 }
 
 function hash(input: number[]) {
-  const sparse = sparseHash(input);
+  const sparse = sparseHash([...input, 17, 31, 73, 47, 23]);
   const denseHash: number[] = [];
   let block: number[] = [];
   for (let i = 0; i <= 256; i++) {
@@ -54,18 +54,11 @@ async function solve() {
   assert(first * second === 8536);
 
   // Second part
-  const extendedInput = [
-    ...input
-      .join(",")
-      .split("")
-      .map((letter) => letter.charCodeAt(0)),
-    17,
-    31,
-    73,
-    47,
-    23,
-  ];
-  assert(hash(extendedInput) === "aff593797989d665349efe11bb4fd99b");
+  const asciiInput = input
+    .join(",")
+    .split("")
+    .map((char) => char.charCodeAt(0));
+  assert(hash(asciiInput) === "aff593797989d665349efe11bb4fd99b");
 }
 
 solve();
