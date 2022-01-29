@@ -48,7 +48,7 @@ function correctWrongWeight(program: Program) {
   const queue = [program];
   const correctedWeights: number[] = [];
 
-  while (queue.length > 0) {
+  while (queue.length) {
     const program = queue.shift();
     if (program === undefined) {
       throw new Error("Empty program!");
