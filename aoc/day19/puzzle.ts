@@ -42,7 +42,7 @@ async function solve() {
     y: 1,
   };
   while (node) {
-    steps += 1;
+    steps++;
     visited.add([node.x, node.y].join(","));
     if (node.type === "+") {
       for (const [x, y] of [

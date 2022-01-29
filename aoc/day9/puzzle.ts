@@ -20,11 +20,11 @@ async function solve() {
     if (!garbage) {
       switch (stream[pointer]) {
         case "{":
-          depth += 1;
+          depth++;
           break;
         case "}":
           groupScore += depth;
-          depth -= 1;
+          depth--;
           break;
         case "<":
           garbage = true;
@@ -38,14 +38,14 @@ async function solve() {
           garbage = false;
           break;
         case "!":
-          pointer += 1;
+          pointer++;
           break;
         default:
-          garbageScore += 1;
+          garbageScore++;
           break;
       }
     }
-    pointer += 1;
+    pointer++;
   }
 
   // First part

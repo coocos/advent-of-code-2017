@@ -91,7 +91,7 @@ async function solve() {
       const point: [number, number] = [x, y];
       if (grid[y][x] === 1 && !visited.has(point.join(","))) {
         dfs(point, grid, visited);
-        groups += 1;
+        groups++;
       }
     }
   }

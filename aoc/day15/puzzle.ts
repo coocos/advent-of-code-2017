@@ -35,7 +35,7 @@ async function solve() {
       (generatorA.next().value! & 65535) ===
       (generatorB.next().value! & 65535)
     ) {
-      matches += 1;
+      matches++;
     }
   }
   assert(matches === 619);
@@ -49,7 +49,7 @@ async function solve() {
       (pickyGeneratorA.next().value! & 65535) ===
       (pickyGeneratorB.next().value! & 65535)
     ) {
-      matches += 1;
+      matches++;
     }
   }
   assert(matches === 290);

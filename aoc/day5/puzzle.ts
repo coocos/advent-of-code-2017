@@ -14,7 +14,7 @@ function jump(offsets: Array<number>, rule: (x: number) => number): number {
     const next = index + offsets[index];
     offsets[index] += rule(offsets[index]);
     index = next;
-    steps += 1;
+    steps++;
   }
   return steps;
 }
