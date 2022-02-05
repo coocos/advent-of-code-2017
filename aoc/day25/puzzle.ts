@@ -51,6 +51,8 @@ async function readInput() {
 
 async function solve() {
   const [transitions, steps] = await readInput();
+
+  // First part
   const machine: Machine = {
     state: "A",
     tape: {},
@@ -64,8 +66,6 @@ async function solve() {
     machine.cursor += move;
     machine.state = state;
   }
-
-  // First part
   assert(
     Object.values(machine.tape).filter((value) => value === 1).length === 2474
   );

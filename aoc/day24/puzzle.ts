@@ -8,11 +8,11 @@ type Ports = {
 
 async function readInput() {
   const input = await readFile(join(__dirname, "input.txt"), "utf-8");
-  return input.split("\n").reduce((comps, c) => {
-    for (const a of c.split("/")) {
-      comps[a] = a in comps ? comps[a].concat(c) : [c];
+  return input.split("\n").reduce((ports, c) => {
+    for (const p of c.split("/")) {
+      ports[p] = p in ports ? ports[p].concat(c) : [c];
     }
-    return comps;
+    return ports;
   }, {} as Ports);
 }
 

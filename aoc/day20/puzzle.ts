@@ -59,25 +59,29 @@ async function readInput(): Promise<Particles> {
 
 function closest(particles: Particles) {
   const closestDuringStep: number[] = [];
-  while (true) {
+  while (
+    !(
+      closestDuringStep.length > 1024 &&
+      new Set(closestDuringStep.slice(-1024)).size === 1
+    )
+  ) {
     Object.values(particles).forEach((particle) => particle.update());
     const closest = Object.values(particles).reduce((closest, particle) => {
       return particle.distance() <= closest.distance() ? particle : closest;
     }, particles[0]);
     closestDuringStep.push(closest.id);
-    if (
-      closestDuringStep.length > 1024 &&
-      new Set(closestDuringStep.slice(-1024)).size === 1
-    ) {
-      break;
-    }
   }
   return closestDuringStep.pop();
 }
 
 function withoutCollisions(particles: Particles) {
   const remainingAfterRound: number[] = [];
-  while (true) {
+  while (
+    !(
+      remainingAfterRound.length > 1024 &&
+      new Set(remainingAfterRound.slice(-1024)).size === 1
+    )
+  ) {
     const collisions: { [hash: string]: Particle[] } = {};
     Object.values(particles).forEach((particle) => {
       if (particle.hash() in collisions) {
@@ -92,12 +96,6 @@ function withoutCollisions(particles: Particles) {
         delete particles[particle.id];
       });
     remainingAfterRound.push(Object.keys(particles).length);
-    if (
-      remainingAfterRound.length > 1024 &&
-      new Set(remainingAfterRound.slice(-1024)).size === 1
-    ) {
-      break;
-    }
     Object.values(particles).forEach((particle) => particle.update());
   }
   return remainingAfterRound.pop();

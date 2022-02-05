@@ -20,12 +20,9 @@ async function solve() {
 
   // Second part
   let delay = 0;
-  while (true) {
-    if (
-      scanners.every(([id, range]) => (delay + id) % ((range - 1) * 2) !== 0)
-    ) {
-      break;
-    }
+  while (
+    scanners.some(([id, range]) => (delay + id) % ((range - 1) * 2) === 0)
+  ) {
     delay++;
   }
   assert(delay === 3897604);

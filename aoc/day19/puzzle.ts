@@ -20,7 +20,7 @@ async function readInput(): Promise<[Graph, Node]> {
     for (let x = 0; x < grid[y].length; x++) {
       const type = grid[y][x];
       if (type !== " ") {
-        graph[[x, y].join(",")] = {
+        graph[[x, y].join()] = {
           x,
           y,
           type,
@@ -43,7 +43,7 @@ async function solve() {
   };
   while (node) {
     steps++;
-    visited.add([node.x, node.y].join(","));
+    visited.add([node.x, node.y].join());
     if (node.type === "+") {
       for (const [x, y] of [
         [0, -1],
@@ -51,8 +51,8 @@ async function solve() {
         [0, 1],
         [-1, 0],
       ]) {
-        const next: string = [node.x + x, node.y + y].join(",");
-        if (graph[next] !== undefined && !visited.has(next)) {
+        const next: string = [node.x + x, node.y + y].join();
+        if (next in graph && !visited.has(next)) {
           node = graph[next];
           dir = { x, y };
           break;
@@ -62,7 +62,7 @@ async function solve() {
       if (/[A-Z]/.test(node.type)) {
         letters.push(node.type);
       }
-      node = graph[[node.x + dir.x, node.y + dir.y].join(",")];
+      node = graph[[node.x + dir.x, node.y + dir.y].join()];
     }
   }
   // First part

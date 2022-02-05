@@ -16,9 +16,7 @@ async function readInput() {
     .reduce((programs, line) => {
       const [left, right] = line.split(" -> ");
       const match = /([a-z]+) \((\d+)\)/.exec(left);
-      if (match === null) {
-        throw new Error(`${line} failed to match regex`);
-      }
+      assert(match);
       if (right !== undefined) {
         subprograms.push([match[1], ...right.split(", ")]);
       }
@@ -45,14 +43,12 @@ function totalWeight(program: Program): number {
 }
 
 function correctWrongWeight(program: Program) {
-  const queue = [program];
+  let queue = [program];
   const correctedWeights: number[] = [];
 
   while (queue.length) {
     const program = queue.shift();
-    if (program === undefined) {
-      throw new Error("Empty program!");
-    }
+    assert(program);
     const weights = program.subprograms.map((program) => totalWeight(program));
     if (new Set(weights).size > 1) {
       const [a, b] = new Set(weights);
@@ -65,7 +61,7 @@ function correctWrongWeight(program: Program) {
         ];
       correctedWeights.push(wrongProgram.weight + correctWeight - wrongWeight);
     }
-    program.subprograms.forEach((program) => queue.push(program));
+    queue = queue.concat(program.subprograms);
   }
   return correctedWeights.pop();
 }
@@ -74,15 +70,14 @@ async function solve() {
   const programs = await readInput();
 
   // First part
-  const candidates = new Set(
-    Object.values(programs).map((program) => program.name)
-  );
-  Object.values(programs)
+  const candidates = Object.values(programs)
     .flatMap((program) => program.subprograms)
-    .forEach((subprogram) => {
-      candidates.delete(subprogram.name);
-    });
-  const root = [...candidates].pop();
+    .reduce(
+      (programs, subprogram) =>
+        programs.filter((program) => program !== subprogram.name),
+      Object.keys(programs)
+    );
+  const root = candidates.pop();
   assert(root === "vgzejbd");
 
   // Second part

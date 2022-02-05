@@ -5,13 +5,12 @@ import assert from "assert";
 async function readInput() {
   const input = join(__dirname, "input.txt");
   const lines = await readFile(input, "utf-8");
-  const numbers = lines.split("\n").map((line) =>
+  return lines.split("\n").map((line) =>
     line
       .split(" ")
       .map((num) => parseInt(num))
       .sort((a, b) => a - b)
   );
-  return numbers;
 }
 
 async function solve() {
@@ -25,18 +24,15 @@ async function solve() {
   assert(sum === 39126);
 
   // Second part
-  let divisionSum = 0;
-  for (const numbers of input) {
-    for (const number of numbers) {
-      const divisor = numbers.find(
-        (other) => number !== other && number % other === 0
-      );
-      if (divisor !== undefined) {
-        divisionSum += number / divisor;
-        break;
-      }
-    }
-  }
+  const divisionSum = input
+    .flatMap((numbers) =>
+      numbers.map((number) => [
+        number,
+        numbers.find((other) => number !== other && number % other === 0) ?? 0,
+      ])
+    )
+    .filter(([a, b]) => b !== 0)
+    .reduce((sum, [a, b]) => sum + a / b, 0);
   assert(divisionSum === 258);
 }
 

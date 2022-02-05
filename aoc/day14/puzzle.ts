@@ -50,18 +50,22 @@ function hash(input: number[]) {
   return dense.map((number) => number.toString(16).padStart(2, "0")).join("");
 }
 
-function dfs([x, y]: [number, number], grid: number[][], visited: Set<string>) {
+function searchRegion(
+  [x, y]: [number, number],
+  grid: number[][],
+  visited: Set<string>
+) {
   if (
     x < 0 ||
     x >= 128 ||
     y < 0 ||
     y >= 128 ||
     grid[y][x] !== 1 ||
-    visited.has([x, y].join(","))
+    visited.has([x, y].join())
   ) {
     return;
   }
-  visited.add([x, y].join(","));
+  visited.add([x, y].join());
   const neighbours = [
     [x, y - 1],
     [x + 1, y],
@@ -69,7 +73,7 @@ function dfs([x, y]: [number, number], grid: number[][], visited: Set<string>) {
     [x - 1, y],
   ];
   for (const [x, y] of neighbours) {
-    dfs([x, y], grid, visited);
+    searchRegion([x, y], grid, visited);
   }
 }
 
@@ -84,18 +88,18 @@ async function solve() {
   assert(used === 8292);
 
   // Second part
-  let groups = 0;
+  let regions = 0;
   const visited = new Set<string>();
   for (let y = 0; y < 128; y++) {
     for (let x = 0; x < 128; x++) {
       const point: [number, number] = [x, y];
-      if (grid[y][x] === 1 && !visited.has(point.join(","))) {
-        dfs(point, grid, visited);
-        groups++;
+      if (grid[y][x] === 1 && !visited.has(point.join())) {
+        searchRegion(point, grid, visited);
+        regions++;
       }
     }
   }
-  assert(groups === 1069);
+  assert(regions === 1069);
 }
 
 solve();

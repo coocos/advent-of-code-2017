@@ -11,22 +11,11 @@ type Registers = {
   [key: string]: number;
 };
 
-function createRegisters(instructions: string[][]): Registers {
-  return instructions.reduce(
-    (registers, instruction) =>
-      /[a-z]/.test(instruction[1])
-        ? {
-            ...registers,
-            [instruction[1]]: 0,
-          }
-        : registers,
-    {}
-  );
-}
-
 function* vm(id: number, instructions: string[][], part1 = false) {
   const registers: Registers = {
-    ...createRegisters(instructions),
+    ...Object.fromEntries(
+      "abcdefghijklmnop".split("").map((register) => [register, 0])
+    ),
     p: part1 ? 0 : id,
   };
 

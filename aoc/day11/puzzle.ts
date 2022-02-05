@@ -28,11 +28,11 @@ function move([q, r, s]: Position, step: Direction): Position {
   }
 }
 
-function distance([q, r, s]: Position): number {
+function distance([q, r, s]: Position) {
   return (Math.abs(q) + Math.abs(r) + Math.abs(s)) / 2;
 }
 
-function walk(start: Position, steps: Direction[]): Position[] {
+function walk(start: Position, steps: Direction[]) {
   return steps.reduce(
     (positions, step) => [
       ...positions,
@@ -50,7 +50,12 @@ async function solve() {
   assert(distance(positions[positions.length - 1]) === 759);
 
   // Second part
-  assert(Math.max(...positions.map((position) => distance(position))) === 1501);
+  assert(
+    positions.reduce(
+      (maxDistance, position) => Math.max(distance(position), maxDistance),
+      0
+    )
+  );
 }
 
 solve();

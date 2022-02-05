@@ -18,9 +18,7 @@ async function readInput(): Promise<Instruction[]> {
   return input.split("\n").map((line) => {
     const match =
       /([a-z]+) (inc|dec) (-?\d+) if ([a-z]+) ([<>=!]+) (-?\d+)/.exec(line);
-    if (match === null) {
-      throw new Error(`Failed to match ${line}`);
-    }
+    assert(match);
     return {
       register: match[1],
       command: match[2] as Instruction["command"],
@@ -38,13 +36,11 @@ async function solve() {
   const instructions = await readInput();
 
   const registers: { [name: string]: number } = instructions.reduce(
-    (registers, instruction) => {
-      return {
-        ...registers,
-        [instruction.register]: 0,
-        [instruction.condition.register]: 0,
-      };
-    },
+    (registers, instruction) => ({
+      ...registers,
+      [instruction.register]: 0,
+      [instruction.condition.register]: 0,
+    }),
     {}
   );
 

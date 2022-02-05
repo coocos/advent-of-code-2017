@@ -4,32 +4,28 @@ import assert from "assert";
 
 async function readInput() {
   const input = join(__dirname, "input.txt");
-  return readFile(input, "utf-8");
+  return (await readFile(input, "utf-8")).split("");
 }
 
 async function solve() {
-  const input = await readInput();
+  const digits = await readInput();
 
   // First part
-  let nextSum = 0;
-  for (let i = 0; i < input.length; i++) {
-    const a = input[i];
-    const b = input[i + 1] ?? input[0];
-    if (a == b) {
-      nextSum += parseInt(a);
-    }
-  }
+  const nextSum = digits.reduce(
+    (sum, value, i) =>
+      value === (digits[i + 1] ?? digits[0]) ? sum + parseInt(value) : sum,
+    0
+  );
   assert(nextSum === 997);
 
   // Second part
-  let halfSum = 0;
-  for (let i = 0; i < input.length; i++) {
-    const a = input[i];
-    const b = input[(i + input.length / 2) % input.length];
-    if (a == b) {
-      halfSum += parseInt(a);
-    }
-  }
+  const halfSum = digits.reduce(
+    (sum, value, i) =>
+      value === digits[(i + digits.length / 2) % digits.length]
+        ? sum + parseInt(value)
+        : sum,
+    0
+  );
   assert(halfSum === 1358);
 }
 

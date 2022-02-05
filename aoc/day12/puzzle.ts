@@ -6,18 +6,15 @@ async function readInput() {
   const input = await readFile(join(__dirname, "input.txt"), "utf-8");
   return input.split("\n").map((line) => {
     const [program, rest] = line.split(" <-> ");
-    return [
-      parseInt(program),
-      ...rest.split(", ").map((prog) => parseInt(prog)),
-    ];
+    return [program, ...rest.split(", ")];
   });
 }
 
 type Graph = {
-  [program: string]: Set<number>;
+  [program: string]: Set<string>;
 };
 
-function findGroup(value: number, visited: Set<number>, graph: Graph) {
+function findGroup(value: string, visited: Set<string>, graph: Graph) {
   for (const link of graph[value]) {
     if (!visited.has(link)) {
       visited.add(link);
@@ -27,9 +24,8 @@ function findGroup(value: number, visited: Set<number>, graph: Graph) {
   return visited;
 }
 
-function constructGraph(links: number[][]) {
+function constructGraph(links: string[][]) {
   const graph: Graph = {};
-
   for (const [program, ...linked] of links) {
     graph[program] =
       program in graph
@@ -40,7 +36,6 @@ function constructGraph(links: number[][]) {
         link in graph ? new Set([program, ...graph[link]]) : new Set([program]);
     }
   }
-
   return graph;
 }
 
@@ -49,17 +44,17 @@ async function solve() {
   const graph = constructGraph(links);
 
   // First part
-  const group = findGroup(0, new Set([0]), graph);
+  const group = findGroup("0", new Set(["0"]), graph);
   assert(group.size === 239);
 
   // Second part
-  let grouped = new Set<number>();
+  let grouped = new Set<string>();
   let groups = 0;
-  for (const program of Object.keys(graph).map((p) => parseInt(p))) {
+  for (const program of Object.keys(graph)) {
     if (!grouped.has(program)) {
       grouped = new Set([
         ...grouped,
-        ...findGroup(program, new Set([0]), graph),
+        ...findGroup(program, new Set(["0"]), graph),
       ]);
       groups++;
     }

@@ -11,9 +11,8 @@ function distribute(banks: number[]) {
   let bank = banks.findIndex((blocks) => blocks === Math.max(...banks));
   let blocks = banks[bank];
   banks[bank] = 0;
-  while (blocks > 0) {
-    bank++;
-    banks[bank % banks.length]++;
+  while (blocks) {
+    banks[++bank % banks.length]++;
     blocks--;
   }
 }

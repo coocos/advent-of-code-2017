@@ -7,7 +7,7 @@ async function readInput() {
   return input.split("\n").map((line) => parseInt(line));
 }
 
-function jump(offsets: Array<number>, rule: (x: number) => number): number {
+function jump(offsets: number[], rule: (x: number) => number): number {
   let index = 0;
   let steps = 0;
   while (index >= 0 && index < offsets.length) {
