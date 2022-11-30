@@ -4,7 +4,13 @@ My set of TypeScript solutions to [Advent of Code 2017](https://adventofcode.com
 
 ## How to run the solutions
 
-You can run the solutions one by one via ts-node:
+Install dependencies first:
+
+```
+npm ci
+```
+
+You can then run the solutions one by one using ts-node:
 
 ```
 npx ts-node aoc/day25/puzzle.ts
